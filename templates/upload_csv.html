@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Upload CSV - SmartLab</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        body {
+            background: linear-gradient(
+                135deg,
+                #ecfeff,
+                #f0fdfa,
+                #eff6ff
+            );
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background: #0f766e;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .page-container {
+            max-width: 750px;
+            margin: 60px auto;
+            padding: 20px;
+        }
+
+        .upload-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.10);
+        }
+
+        .upload-title {
+            text-align: center;
+            color: #0f766e;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .upload-subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .btn-upload {
+            background: #0f766e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 25px;
+            font-weight: bold;
+        }
+
+        .btn-upload:hover {
+            background: #115e59;
+            color: white;
+        }
+
+        .btn-back {
+            border-radius: 10px;
+            padding: 12px 25px;
+        }
+
+        .instruction-box {
+            background: #f0fdfa;
+            border-left: 5px solid #0f766e;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+
+        .instruction-box h5 {
+            color: #0f766e;
+            font-weight: bold;
+        }
+
+        .csv-example {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: Consolas, monospace;
+            margin-top: 15px;
+        }
+
+        .disclaimer {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 25px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================= -->
+<!-- NAVBAR -->
+<!-- ========================================= -->
+
+<nav class="navbar navbar-expand-lg">
+
+    <div class="container">
+
+        <a class="navbar-brand"
+           href="/dashboard">
+
+            🧪 SmartLab
+
+        </a>
+
+        <div>
+
+            <a href="/dashboard"
+               class="btn btn-light btn-sm">
+
+                Dashboard
+
+            </a>
+
+            <a href="/logout"
+               class="btn btn-outline-light btn-sm">
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- ========================================= -->
+<!-- MAIN CONTENT -->
+<!-- ========================================= -->
+
+<div class="page-container">
+
+    <div class="upload-card">
+
+        <h2 class="upload-title">
+
+            📁 Upload Laboratory Report
+
+        </h2>
+
+
+        <p class="upload-subtitle">
+
+            Upload your laboratory test results using a CSV file.
+
+        </p>
+
+
+        <!-- ================================= -->
+        <!-- FLASH MESSAGES -->
+        <!-- ================================= -->
+
+        {% with messages = get_flashed_messages(
+            with_categories=true
+        ) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert alert-{{ category }}"
+                         role="alert">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- ================================= -->
+        <!-- UPLOAD FORM -->
+        <!-- ================================= -->
+
+        <form
+            action="/upload-csv"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+
+            <!-- ============================= -->
+            <!-- REPORT DATE -->
+            <!-- ============================= -->
+
+            <div class="mb-4">
+
+                <label
+                    for="report_date"
+                    class="form-label"
+                >
+
+                    📅 Laboratory Report Date
+
+                </label>
+
+                <input
+                    type="date"
+                    class="form-control"
+                    id="report_date"
+                    name="report_date"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ============================= -->
+            <!-- CSV FILE -->
+            <!-- ============================= -->
+
+            <div class="mb-4">
+
+                <label
+                    for="csv_file"
+                    class="form-label"
+                >
+
+                    📄 Select CSV File
+
+                </label>
+
+                <input
+                    type="file"
+                    class="form-control"
+                    id="csv_file"
+                    name="csv_file"
+                    accept=".csv"
+                    required
+                >
+
+                <div class="form-text">
+
+                    Only .csv files are allowed.
+
+                </div>
+
+            </div>
+
+
+            <!-- ============================= -->
+            <!-- BUTTONS -->
+            <!-- ============================= -->
+
+            <div class="d-flex gap-3">
+
+                <a
+                    href="/dashboard"
+                    class="btn btn-secondary btn-back"
+                >
+
+                    ← Back
+
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-upload"
+                >
+
+                    📤 Upload CSV
+
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- ================================= -->
+        <!-- INSTRUCTIONS -->
+        <!-- ================================= -->
+
+        <div class="instruction-box">
+
+            <h5>
+
+                📌 CSV File Format
+
+            </h5>
+
+            <p>
+
+                Your CSV file must contain these two columns:
+
+            </p>
+
+            <ul>
+
+                <li>
+                    <strong>Test Name</strong>
+                </li>
+
+                <li>
+                    <strong>Value</strong>
+                </li>
+
+            </ul>
+
+
+            <p class="mb-2">
+
+                Example:
+
+            </p>
+
+
+            <div class="csv-example">
+
+                Test Name,Value<br>
+
+                Hemoglobin,14.2<br>
+
+                Fasting Blood Glucose,92<br>
+
+                Total Cholesterol,180<br>
+
+                HDL,52<br>
+
+                LDL,110<br>
+
+                Triglycerides,130<br>
+
+                WBC,7500<br>
+
+                Platelets,250000
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================= -->
+        <!-- DISCLAIMER -->
+        <!-- ================================= -->
+
+        <div class="disclaimer">
+
+            SmartLab organizes laboratory results and
+            displays reference-range information.
+
+            <br>
+
+            It does not diagnose medical conditions.
+
+            <br>
+
+            Please discuss abnormal results with a
+            qualified healthcare professional.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

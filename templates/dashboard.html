@@ -1,0 +1,2513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SmartLab - Dashboard</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <style>
+
+        /* ==================================================
+           RESET
+        ================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* ==================================================
+           BODY
+        ================================================== */
+
+        body {
+            background: #f1f5f9;
+            color: #334155;
+            min-height: 100vh;
+        }
+
+
+        /* ==================================================
+           NAVBAR
+        ================================================== */
+
+        .navbar {
+            background: #0f766e;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .welcome {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .logout {
+            text-decoration: none;
+            color: white;
+            border: 1px solid white;
+            padding: 9px 17px;
+            border-radius: 7px;
+            transition: 0.2s;
+        }
+
+        .logout:hover {
+            background: white;
+            color: #0f766e;
+        }
+
+
+        /* ==================================================
+           MAIN
+        ================================================== */
+
+        .main {
+            width: 88%;
+            max-width: 1250px;
+            margin: 35px auto;
+        }
+
+
+        /* ==================================================
+           FLASH
+        ================================================== */
+
+        .flash-container {
+            margin-bottom: 25px;
+        }
+
+        .flash {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .flash-success {
+            background: #dcfce7;
+            color: #166534;
+            border-left: 4px solid #16a34a;
+        }
+
+        .flash-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #dc2626;
+        }
+
+        .flash-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left: 4px solid #2563eb;
+        }
+
+
+        /* ==================================================
+           HEADING
+        ================================================== */
+
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            color: #0f766e;
+            font-size: 32px;
+            margin-bottom: 7px;
+        }
+
+        .heading p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .heading-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+
+        /* ==================================================
+           BUTTONS
+        ================================================== */
+
+        .add-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #0f766e;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+            white-space: nowrap;
+            border: none;
+            cursor: pointer;
+        }
+
+        .add-btn:hover {
+            background: #115e59;
+            transform: translateY(-1px);
+        }
+
+        .csv-btn {
+            background: #2563eb;
+        }
+
+        .csv-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .clear-btn {
+            background: #64748b;
+        }
+
+        .clear-btn:hover {
+            background: #475569;
+        }
+
+
+        /* ==================================================
+           STATISTICS
+        ================================================== */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            background: #ccfbf1;
+            flex-shrink: 0;
+        }
+
+        .card h3 {
+            font-size: 28px;
+            color: #0f766e;
+            margin-bottom: 4px;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        /* ==================================================
+           HEALTH STATUS SUMMARY
+        ================================================== */
+
+        .health-summary {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 35px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .health-summary h2 {
+            font-size: 22px;
+            margin-bottom: 7px;
+            color: #334155;
+        }
+
+        .health-summary-description {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .health-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .health-box {
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .health-box h3 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .health-box p {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .within-card {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .below-card {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .above-card {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .total-card {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+
+        /* ==================================================
+           TREND SECTION
+        ================================================== */
+
+        .trend-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .trend-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .trend-header h2 {
+            color: #334155;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .trend-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .test-select-box {
+            min-width: 280px;
+        }
+
+        .test-select-box label {
+            display: block;
+            color: #475569;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        #testSelect {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #334155;
+            font-size: 14px;
+            outline: none;
+        }
+
+        #testSelect:focus {
+            border-color: #0f766e;
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 430px;
+            padding: 10px;
+        }
+
+        #trendMessage {
+            text-align: center;
+            padding: 80px 20px;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* ==================================================
+           REPORT SECTION
+        ================================================== */
+
+        .report-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .report-header h2 {
+            color: #334155;
+            font-size: 22px;
+        }
+
+
+        /* ==================================================
+           SEARCH & FILTER
+        ================================================== */
+
+        .filter-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .filter-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #334155;
+            margin-bottom: 15px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.3fr 1.3fr 1.2fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .filter-input,
+        .filter-select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #334155;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .filter-input:focus,
+        .filter-select:focus {
+            border-color: #0f766e;
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.10);
+        }
+
+        .filter-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-actions .add-btn {
+            padding: 11px 15px;
+            width: 100%;
+        }
+
+        .filter-result-info {
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .filter-result-info strong {
+            color: #0f766e;
+        }
+
+
+        /* ==================================================
+           TABLE
+        ================================================== */
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        thead th {
+            background: #f0fdfa;
+            color: #0f766e;
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 2px solid #ccfbf1;
+        }
+
+        tbody td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .report-number {
+            font-weight: bold;
+            color: #64748b;
+        }
+
+        .report-date {
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .test-count {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .source-badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .status-normal {
+            color: #15803d;
+            font-weight: bold;
+            background: #dcfce7;
+            padding: 7px 11px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 13px;
+        }
+
+        .status-warning {
+            color: #b91c1c;
+            font-weight: bold;
+            background: #fee2e2;
+            padding: 7px 11px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 13px;
+        }
+
+        .view-btn {
+            display: inline-block;
+            background: #0f766e;
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .view-btn:hover {
+            background: #115e59;
+            transform: translateY(-1px);
+        }
+
+
+        /* ==================================================
+           NO FILTER RESULTS
+        ================================================== */
+
+        .no-filter-results {
+            display: none;
+            text-align: center;
+            padding: 45px 20px;
+            color: #64748b;
+        }
+
+        .no-filter-results .icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .no-filter-results h3 {
+            color: #334155;
+            margin-bottom: 7px;
+        }
+
+
+        /* ==================================================
+           EMPTY STATE
+        ================================================== */
+
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 65px;
+            margin-bottom: 18px;
+        }
+
+        .empty h3 {
+            color: #334155;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .empty-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+
+        /* ==================================================
+           INFORMATION
+        ================================================== */
+
+        .info-section {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .info-card h3 {
+            color: #0f766e;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .info-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        /* ==================================================
+           DISCLAIMER
+        ================================================== */
+
+        .disclaimer {
+            margin-top: 30px;
+            padding: 18px;
+            background: #fefce8;
+            color: #854d0e;
+            border-radius: 10px;
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media (max-width: 1100px) {
+
+            .filter-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .health-summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+
+            .trend-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .test-select-box {
+                min-width: 100%;
+            }
+
+            .filter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .nav-right {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .heading {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .heading-buttons {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .add-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .main {
+                width: 94%;
+            }
+
+            .report-section,
+            .trend-section {
+                padding: 20px;
+            }
+
+            .chart-container {
+                height: 350px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .health-summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     NAVBAR
+================================================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🧪 SmartLab
+    </div>
+
+    <div class="nav-right">
+
+        <div class="welcome">
+            Welcome,
+            {{ session["patient_name"] }}
+            👋
+        </div>
+
+        <a
+            href="/logout"
+            class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ==================================================
+     MAIN
+================================================== -->
+
+<div class="main">
+
+
+    <!-- ==================================================
+         FLASH MESSAGES
+    ================================================== -->
+
+    <div class="flash-container">
+
+        {% with messages =
+            get_flashed_messages(
+                with_categories=true
+            )
+        %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="flash
+                        {% if category == 'success' %}
+                            flash-success
+                        {% elif category == 'danger' %}
+                            flash-danger
+                        {% else %}
+                            flash-info
+                        {% endif %}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+    </div>
+
+
+    <!-- ==================================================
+         PAGE HEADING
+    ================================================== -->
+
+    <div class="heading">
+
+        <div>
+
+            <h1>
+                Dashboard
+            </h1>
+
+            <p>
+                Manage and monitor your laboratory reports.
+            </p>
+
+        </div>
+
+
+        <div class="heading-buttons">
+
+            <a
+                href="/add-report"
+                class="add-btn">
+
+                + Add Lab Report
+
+            </a>
+
+
+            <a
+                href="/upload-csv"
+                class="add-btn csv-btn">
+
+                📁 Upload CSV
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         STATISTICS
+    ================================================== -->
+
+    <div class="stats">
+
+
+        <!-- TOTAL REPORTS -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                📋
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ total_reports }}
+                </h3>
+
+                <p>
+                    Total Reports
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL RESULTS -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                🧪
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ total_results }}
+                </h3>
+
+                <p>
+                    Total Test Results
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FLAGGED -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                ⚠️
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ flagged_results }}
+                </h3>
+
+                <p>
+                    Outside Reference Range
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         HEALTH STATUS SUMMARY
+    ================================================== -->
+
+    <section class="health-summary">
+
+        <h2>
+            🩺 Health Status Summary
+        </h2>
+
+        <p class="health-summary-description">
+            Summary of laboratory results based on the configured
+            reference ranges.
+        </p>
+
+
+        <div class="health-summary-grid">
+
+
+            <!-- TOTAL -->
+
+            <div class="health-box total-card">
+
+                <h3>
+                    {{ total_results }}
+                </h3>
+
+                <p>
+                    🧪 Total Tests
+                </p>
+
+            </div>
+
+
+            <!-- WITHIN -->
+
+            <div class="health-box within-card">
+
+                <h3>
+                    {{ within_count }}
+                </h3>
+
+                <p>
+                    ✅ Within Range
+                </p>
+
+            </div>
+
+
+            <!-- BELOW -->
+
+            <div class="health-box below-card">
+
+                <h3>
+                    {{ below_count }}
+                </h3>
+
+                <p>
+                    ↓ Below Range
+                </p>
+
+            </div>
+
+
+            <!-- ABOVE -->
+
+            <div class="health-box above-card">
+
+                <h3>
+                    {{ above_count }}
+                </h3>
+
+                <p>
+                    ↑ Above Range
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         HISTORICAL TREND CHART
+    ================================================== -->
+
+    <section class="trend-section">
+
+        <div class="trend-header">
+
+            <div>
+
+                <h2>
+                    📈 Historical Health Trends
+                </h2>
+
+                <p>
+                    Track laboratory values across
+                    your saved reports.
+                </p>
+
+            </div>
+
+
+            <div class="test-select-box">
+
+                <label for="testSelect">
+                    Select Laboratory Test
+                </label>
+
+                <select id="testSelect">
+
+                    <option value="">
+                        Loading tests...
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-container">
+
+            <canvas id="trendChart"></canvas>
+
+            <div id="trendMessage">
+                Loading historical trend data...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         REPORT HISTORY
+    ================================================== -->
+
+    <div class="report-section">
+
+
+        <div class="report-header">
+
+            <h2>
+                Laboratory Report History
+            </h2>
+
+        </div>
+
+
+        {% if reports %}
+
+
+            <!-- ==================================================
+                 SEARCH & FILTER
+            ================================================== -->
+
+            <div class="filter-box">
+
+                <div class="filter-title">
+                    🔍 Search & Filter Reports
+                </div>
+
+
+                <div class="filter-grid">
+
+
+                    <!-- TEST SEARCH -->
+
+                    <div class="filter-group">
+
+                        <label for="reportSearch">
+                            Search Test Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="reportSearch"
+                            class="filter-input"
+                            placeholder="Example: Hemoglobin"
+                        >
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="filter-group">
+
+                        <label for="dateFilter">
+                            Report Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="dateFilter"
+                            class="filter-input"
+                        >
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="filter-group">
+
+                        <label for="statusFilter">
+                            Status
+                        </label>
+
+                        <select
+                            id="statusFilter"
+                            class="filter-select">
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="Within Range">
+                                ✅ Within Range
+                            </option>
+
+                            <option value="Below Range">
+                                ↓ Below Range
+                            </option>
+
+                            <option value="Above Range">
+                                ↑ Above Range
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SOURCE -->
+
+                    <div class="filter-group">
+
+                        <label for="sourceFilter">
+                            Source
+                        </label>
+
+                        <select
+                            id="sourceFilter"
+                            class="filter-select">
+
+                            <option value="all">
+                                All Sources
+                            </option>
+
+                            <option value="Manual Entry">
+                                ✍ Manual Entry
+                            </option>
+
+                            <option value="CSV Upload">
+                                📁 CSV Upload
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TEST COUNT -->
+
+                    <div class="filter-group">
+
+                        <label for="testCountFilter">
+                            Test Count
+                        </label>
+
+                        <select
+                            id="testCountFilter"
+                            class="filter-select">
+
+                            <option value="all">
+                                All
+                            </option>
+
+                            <option value="1">
+                                1 Test
+                            </option>
+
+                            <option value="2plus">
+                                2+ Tests
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- CLEAR -->
+
+                    <div class="filter-actions">
+
+                        <button
+                            type="button"
+                            class="add-btn clear-btn"
+                            onclick="clearReportFilters()">
+
+                            🔄 Clear
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="filter-result-info"
+                    id="filterResultInfo">
+
+                    Showing
+                    <strong id="visibleReportCount">
+                        {{ reports|length }}
+                    </strong>
+                    of
+                    <strong>
+                        {{ reports|length }}
+                    </strong>
+                    reports
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 REPORT TABLE
+            ================================================== -->
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Report Date
+                            </th>
+
+                            <th>
+                                Tests
+                            </th>
+
+                            <th>
+                                Source
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="reportTableBody">
+
+
+                        {% for report in reports %}
+
+
+                            {% set report_source =
+                                report.source|default(
+                                    "Manual Entry"
+                                )
+                            %}
+
+
+                            <tr
+                                class="report-row"
+
+                                data-date="{{ report.report_date }}"
+
+                                data-source="{{ report_source }}"
+
+                                data-tests="{% for result in report.results %}{{ result.test_name }} {% endfor %}"
+
+                                data-statuses="{% for result in report.results %}{{ result.status }}|{% endfor %}"
+
+                                data-test-count="{{ report.results|length }}"
+                            >
+
+
+                                <!-- NUMBER -->
+
+                                <td>
+
+                                    <span class="report-number">
+
+                                        {{ loop.index }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- DATE -->
+
+                                <td>
+
+                                    <span class="report-date">
+
+                                        {{ report.report_date }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- TEST COUNT -->
+
+                                <td>
+
+                                    <span class="test-count">
+
+                                        {{ report.results|length }}
+
+                                        Tests
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- SOURCE -->
+
+                                <td>
+
+                                    <span class="source-badge">
+
+                                        {% if report_source == "CSV Upload" %}
+
+                                            📁 CSV Upload
+
+                                        {% else %}
+
+                                            ✍ Manual Entry
+
+                                        {% endif %}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+
+                                    {% set flagged =
+                                        namespace(count=0)
+                                    %}
+
+
+                                    {% for result
+                                        in report.results %}
+
+                                        {% if
+                                            result.status
+                                            != "Within Range"
+                                        %}
+
+                                            {% set flagged.count =
+                                                flagged.count + 1
+                                            %}
+
+                                        {% endif %}
+
+                                    {% endfor %}
+
+
+                                    {% if flagged.count == 0 %}
+
+                                        <span
+                                            class="status-normal">
+
+                                            ✓ All Within Range
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span
+                                            class="status-warning">
+
+                                            ⚠
+                                            {{ flagged.count }}
+                                            Outside Range
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- VIEW -->
+
+                                <td>
+
+                                    <a
+                                        href="{{
+                                            url_for(
+                                                'view_report',
+                                                report_id=report._id
+                                            )
+                                        }}"
+                                        class="view-btn">
+
+                                        👁 View Details
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ==================================================
+                 NO FILTER RESULTS
+            ================================================== -->
+
+            <div
+                id="noFilterResults"
+                class="no-filter-results">
+
+                <div class="icon">
+                    🔎
+                </div>
+
+                <h3>
+                    No Matching Reports
+                </h3>
+
+                <p>
+                    Try changing your search or filter options.
+                </p>
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- ==================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📊
+                </div>
+
+                <h3>
+                    No Laboratory Reports Yet
+                </h3>
+
+                <p>
+
+                    Add your first laboratory report
+                    or upload a CSV file to start
+                    tracking your laboratory results.
+
+                </p>
+
+
+                <div class="empty-buttons">
+
+                    <a
+                        href="/add-report"
+                        class="add-btn">
+
+                        + Add First Report
+
+                    </a>
+
+
+                    <a
+                        href="/upload-csv"
+                        class="add-btn csv-btn">
+
+                        📁 Upload CSV
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ==================================================
+         INFORMATION CARDS
+    ================================================== -->
+
+    <div class="info-section">
+
+
+        <div class="info-card">
+
+            <h3>
+                📊 Track Your Reports
+            </h3>
+
+            <p>
+
+                Store multiple laboratory reports and
+                review previous results from one dashboard.
+
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h3>
+                🔎 Reference Range
+            </h3>
+
+            <p>
+
+                SmartLab compares entered laboratory values
+                with configured reference ranges and displays
+                whether each value is within, below, or above
+                the configured range.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         DISCLAIMER
+    ================================================== -->
+
+    <div class="disclaimer">
+
+        ⚠️
+
+        <strong>Important:</strong>
+
+        SmartLab organizes laboratory results and displays
+        reference-range information. It does not diagnose
+        medical conditions. Please discuss abnormal results
+        with a qualified healthcare professional.
+
+    </div>
+
+
+</div>
+
+
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<script>
+
+    /* ==================================================
+       TREND VARIABLES
+    ================================================== */
+
+    let trendData = {};
+
+    let trendChart = null;
+
+
+    /* ==================================================
+       LOAD TREND DATA
+    ================================================== */
+
+    async function loadTrendData() {
+
+        const message =
+            document.getElementById(
+                "trendMessage"
+            );
+
+        const select =
+            document.getElementById(
+                "testSelect"
+            );
+
+
+        try {
+
+            const response =
+                await fetch("/api/trends");
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load trend data."
+                );
+
+            }
+
+
+            trendData =
+                await response.json();
+
+
+            if (trendData.error) {
+
+                message.innerText =
+                    trendData.error;
+
+                return;
+
+            }
+
+
+            const testNames =
+                Object.keys(trendData);
+
+
+            if (testNames.length === 0) {
+
+                select.innerHTML = `
+                    <option value="">
+                        No test data available
+                    </option>
+                `;
+
+                message.innerText =
+                    "Add laboratory reports to view historical trends.";
+
+                return;
+
+            }
+
+
+            select.innerHTML = "";
+
+
+            testNames.forEach(
+                function(testName) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        testName;
+
+                    option.textContent =
+                        testName;
+
+                    select.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+
+            message.style.display =
+                "none";
+
+
+            drawChart(
+                testNames[0]
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.style.display =
+                "block";
+
+            message.innerText =
+                "Unable to load historical trend data.";
+
+        }
+
+    }
+
+
+    /* ==================================================
+       DRAW TREND CHART
+    ================================================== */
+
+    function drawChart(testName) {
+
+        const data =
+            trendData[testName];
+
+
+        if (!data) {
+
+            return;
+
+        }
+
+
+        const canvas =
+            document.getElementById(
+                "trendChart"
+            );
+
+
+        if (trendChart !== null) {
+
+            trendChart.destroy();
+
+        }
+
+
+        const labels =
+            data.dates || [];
+
+
+        const values =
+            data.values || [];
+
+
+        const statuses =
+            data.statuses || [];
+
+
+        const lowerLimit =
+            Number(
+                data.lower_limit
+            );
+
+
+        const upperLimit =
+            Number(
+                data.upper_limit
+            );
+
+
+        const lowerRange =
+            labels.map(
+                function() {
+
+                    return lowerLimit;
+
+                }
+            );
+
+
+        const upperRange =
+            labels.map(
+                function() {
+
+                    return upperLimit;
+
+                }
+            );
+
+
+        /* ------------------------------------------
+           POINT COLORS
+        ------------------------------------------ */
+
+        const pointColors =
+            values.map(
+                function(value, index) {
+
+                    const status =
+                        statuses[index] || "";
+
+                    if (
+                        status ===
+                        "Within Range"
+                    ) {
+
+                        return "#198754";
+
+                    }
+
+                    if (
+                        status ===
+                        "Below Range"
+                    ) {
+
+                        return "#fd7e14";
+
+                    }
+
+                    if (
+                        status ===
+                        "Above Range"
+                    ) {
+
+                        return "#dc3545";
+
+                    }
+
+                    return "#64748b";
+
+                }
+            );
+
+
+        trendChart =
+            new Chart(
+                canvas,
+                {
+
+                    type: "line",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    testName +
+                                    " Value",
+
+                                data:
+                                    values,
+
+                                borderWidth: 3,
+
+                                borderColor:
+                                    "#0f766e",
+
+                                backgroundColor:
+                                    "#0f766e",
+
+                                pointRadius: 6,
+
+                                pointHoverRadius: 8,
+
+                                pointBackgroundColor:
+                                    pointColors,
+
+                                pointBorderColor:
+                                    pointColors,
+
+                                tension: 0.3,
+
+                                fill: false
+
+                            },
+
+
+                            {
+
+                                label:
+                                    "Upper Reference Limit",
+
+                                data:
+                                    upperRange,
+
+                                borderWidth: 2,
+
+                                borderDash:
+                                    [7, 5],
+
+                                borderColor:
+                                    "#dc3545",
+
+                                pointRadius: 0,
+
+                                tension: 0,
+
+                                fill: false
+
+                            },
+
+
+                            {
+
+                                label:
+                                    "Lower Reference Limit",
+
+                                data:
+                                    lowerRange,
+
+                                borderWidth: 2,
+
+                                borderDash:
+                                    [7, 5],
+
+                                borderColor:
+                                    "#fd7e14",
+
+                                pointRadius: 0,
+
+                                tension: 0,
+
+                                fill: false
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+
+                        plugins: {
+
+                            legend: {
+
+                                display: true,
+
+                                position: "top"
+
+                            },
+
+
+                            tooltip: {
+
+                                enabled: true,
+
+                                callbacks: {
+
+                                    label:
+                                        function(context) {
+
+                                            const index =
+                                                context.dataIndex;
+
+                                            const value =
+                                                context.parsed.y;
+
+                                            const unit =
+                                                data.unit || "";
+
+                                            if (
+                                                context.datasetIndex
+                                                === 0
+                                            ) {
+
+                                                const status =
+                                                    statuses[index]
+                                                    || "";
+
+                                                return (
+                                                    " Value: "
+                                                    + value
+                                                    + " "
+                                                    + unit
+                                                    + " | "
+                                                    + status
+                                                );
+
+                                            }
+
+                                            return (
+                                                " "
+                                                + context.dataset.label
+                                                + ": "
+                                                + value
+                                                + " "
+                                                + unit
+                                            );
+
+                                        }
+
+                                }
+
+                            }
+
+                        },
+
+
+                        scales: {
+
+                            x: {
+
+                                title: {
+
+                                    display: true,
+
+                                    text:
+                                        "Report Date"
+
+                                }
+
+                            },
+
+
+                            y: {
+
+                                beginAtZero: false,
+
+                                title: {
+
+                                    display: true,
+
+                                    text:
+                                        data.unit || "Value"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+    /* ==================================================
+       TEST SELECTION
+    ================================================== */
+
+    document
+        .getElementById("testSelect")
+        .addEventListener(
+            "change",
+            function() {
+
+                drawChart(
+                    this.value
+                );
+
+            }
+        );
+
+
+    /* ==================================================
+       SEARCH & FILTER
+    ================================================== */
+
+    function applyReportFilters() {
+
+        const searchText =
+            document
+                .getElementById(
+                    "reportSearch"
+                )
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        const selectedDate =
+            document
+                .getElementById(
+                    "dateFilter"
+                )
+                .value;
+
+
+        const selectedStatus =
+            document
+                .getElementById(
+                    "statusFilter"
+                )
+                .value;
+
+
+        const selectedSource =
+            document
+                .getElementById(
+                    "sourceFilter"
+                )
+                .value;
+
+
+        const selectedTestCount =
+            document
+                .getElementById(
+                    "testCountFilter"
+                )
+                .value;
+
+
+        const rows =
+            document.querySelectorAll(
+                ".report-row"
+            );
+
+
+        let visibleCount = 0;
+
+
+        rows.forEach(
+            function(row) {
+
+                const rowDate =
+                    row.dataset.date || "";
+
+
+                const rowSource =
+                    row.dataset.source ||
+                    "Manual Entry";
+
+
+                const testNames =
+                    (
+                        row.dataset.tests ||
+                        ""
+                    ).toLowerCase();
+
+
+                const statuses =
+                    row.dataset.statuses ||
+                    "";
+
+
+                const testCount =
+                    parseInt(
+                        row.dataset.testCount ||
+                        "0"
+                    );
+
+
+                /* --------------------------------------
+                   SEARCH
+                -------------------------------------- */
+
+                const matchesSearch =
+                    searchText === "" ||
+                    testNames.includes(
+                        searchText
+                    );
+
+
+                /* --------------------------------------
+                   DATE
+                -------------------------------------- */
+
+                const matchesDate =
+                    selectedDate === "" ||
+                    rowDate === selectedDate;
+
+
+                /* --------------------------------------
+                   SOURCE
+                -------------------------------------- */
+
+                const matchesSource =
+                    selectedSource === "all" ||
+                    rowSource === selectedSource;
+
+
+                /* --------------------------------------
+                   STATUS
+                -------------------------------------- */
+
+                const matchesStatus =
+                    selectedStatus === "all" ||
+                    statuses.includes(
+                        selectedStatus + "|"
+                    );
+
+
+                /* --------------------------------------
+                   TEST COUNT
+                -------------------------------------- */
+
+                let matchesTestCount = true;
+
+
+                if (
+                    selectedTestCount === "1"
+                ) {
+
+                    matchesTestCount =
+                        testCount === 1;
+
+                }
+
+
+                if (
+                    selectedTestCount === "2plus"
+                ) {
+
+                    matchesTestCount =
+                        testCount >= 2;
+
+                }
+
+
+                /* --------------------------------------
+                   FINAL RESULT
+                -------------------------------------- */
+
+                const showRow =
+                    matchesSearch &&
+                    matchesDate &&
+                    matchesSource &&
+                    matchesStatus &&
+                    matchesTestCount;
+
+
+                if (showRow) {
+
+                    row.style.display = "";
+
+                    visibleCount++;
+
+                } else {
+
+                    row.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        /* ------------------------------------------
+           UPDATE COUNT
+        ------------------------------------------ */
+
+        document
+            .getElementById(
+                "visibleReportCount"
+            )
+            .innerText =
+                visibleCount;
+
+
+        /* ------------------------------------------
+           NO RESULTS MESSAGE
+        ------------------------------------------ */
+
+        const noResults =
+            document.getElementById(
+                "noFilterResults"
+            );
+
+
+        if (
+            visibleCount === 0 &&
+            rows.length > 0
+        ) {
+
+            noResults.style.display =
+                "block";
+
+        } else {
+
+            noResults.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* ==================================================
+       CLEAR FILTERS
+    ================================================== */
+
+    function clearReportFilters() {
+
+        document
+            .getElementById(
+                "reportSearch"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "dateFilter"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "statusFilter"
+            )
+            .value = "all";
+
+
+        document
+            .getElementById(
+                "sourceFilter"
+            )
+            .value = "all";
+
+
+        document
+            .getElementById(
+                "testCountFilter"
+            )
+            .value = "all";
+
+
+        applyReportFilters();
+
+    }
+
+
+    /* ==================================================
+       FILTER EVENT LISTENERS
+    ================================================== */
+
+    document
+        .getElementById(
+            "reportSearch"
+        )
+        .addEventListener(
+            "input",
+            applyReportFilters
+        );
+
+
+    document
+        .getElementById(
+            "dateFilter"
+        )
+        .addEventListener(
+            "change",
+            applyReportFilters
+        );
+
+
+    document
+        .getElementById(
+            "statusFilter"
+        )
+        .addEventListener(
+            "change",
+            applyReportFilters
+        );
+
+
+    document
+        .getElementById(
+            "sourceFilter"
+        )
+        .addEventListener(
+            "change",
+            applyReportFilters
+        );
+
+
+    document
+        .getElementById(
+            "testCountFilter"
+        )
+        .addEventListener(
+            "change",
+            applyReportFilters
+        );
+
+
+    /* ==================================================
+       START
+    ================================================== */
+
+    loadTrendData();
+
+
+    /* Apply filters when page loads */
+
+    applyReportFilters();
+
+</script>
+
+
+</body>
+
+</html>

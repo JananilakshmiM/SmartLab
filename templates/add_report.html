@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartLab - Add Lab Report</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            background: #0f766e;
+            color: white;
+
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+
+            border: 1px solid white;
+
+            padding: 8px 16px;
+
+            border-radius: 7px;
+        }
+
+        .back-btn:hover {
+            background: white;
+            color: #0f766e;
+        }
+
+        /* MAIN */
+
+        .container {
+            width: 90%;
+            max-width: 950px;
+
+            margin: 35px auto;
+        }
+
+        .title-section {
+            margin-bottom: 25px;
+        }
+
+        .title-section h1 {
+            color: #0f766e;
+            font-size: 32px;
+        }
+
+        .title-section p {
+            color: #64748b;
+            margin-top: 7px;
+        }
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 20px rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
+        }
+
+        /* DATE */
+
+        .date-section {
+            margin-bottom: 30px;
+        }
+
+        .date-section label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .date-section input {
+            width: 250px;
+
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+        }
+
+        /* TEST GRID */
+
+        .test-title {
+            color: #334155;
+
+            font-size: 22px;
+
+            margin-bottom: 20px;
+
+            padding-bottom: 12px;
+
+            border-bottom: 2px solid #ccfbf1;
+        }
+
+        .test-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+        .test-card {
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            padding: 20px;
+
+            border-radius: 12px;
+        }
+
+        .test-card:hover {
+
+            border-color: #5eead4;
+
+        }
+
+        .test-name {
+
+            font-weight: bold;
+
+            color: #0f766e;
+
+            margin-bottom: 8px;
+
+            font-size: 17px;
+        }
+
+        .range {
+
+            font-size: 13px;
+
+            color: #64748b;
+
+            margin-bottom: 12px;
+        }
+
+        .input-row {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .input-row input {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        .input-row input:focus {
+
+            border-color: #0f766e;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(
+                    15,
+                    118,
+                    110,
+                    0.1
+                );
+        }
+
+        .unit {
+
+            min-width: 75px;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+        /* BUTTONS */
+
+        .buttons {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 35px;
+
+            gap: 15px;
+        }
+
+        .cancel-btn {
+
+            text-decoration: none;
+
+            padding: 14px 25px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            color: #475569;
+
+            background: white;
+        }
+
+        .cancel-btn:hover {
+
+            background: #f8fafc;
+
+        }
+
+        .save-btn {
+
+            padding: 14px 30px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #0f766e;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+
+            background: #115e59;
+
+        }
+
+        /* INFO */
+
+        .info {
+
+            margin-top: 25px;
+
+            padding: 16px;
+
+            background: #ecfeff;
+
+            border-left: 4px solid #0f766e;
+
+            color: #155e75;
+
+            border-radius: 7px;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .test-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .navbar {
+
+                flex-direction: column;
+
+                gap: 15px;
+
+            }
+
+            .date-section input {
+
+                width: 100%;
+
+            }
+
+            .buttons {
+
+                flex-direction: column;
+
+            }
+
+            .cancel-btn,
+            .save-btn {
+
+                text-align: center;
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🧪 SmartLab
+    </div>
+
+    <a
+        href="/dashboard"
+        class="back-btn">
+
+        ← Dashboard
+
+    </a>
+
+</nav>
+
+
+<!-- MAIN -->
+
+<div class="container">
+
+
+    <!-- TITLE -->
+
+    <div class="title-section">
+
+        <h1>
+            Add Laboratory Report
+        </h1>
+
+        <p>
+            Enter the test values from your laboratory report.
+        </p>
+
+    </div>
+
+
+    <!-- FORM -->
+
+    <div class="form-card">
+
+        <form
+            method="POST"
+            action="/add-report">
+
+
+            <!-- REPORT DATE -->
+
+            <div class="date-section">
+
+                <label>
+                    Laboratory Report Date
+                </label>
+
+                <input
+                    type="date"
+                    name="report_date"
+                    required
+                >
+
+            </div>
+
+
+            <!-- TESTS -->
+
+            <h2 class="test-title">
+                🧪 Laboratory Test Results
+            </h2>
+
+
+            <div class="test-grid">
+
+
+                {% for test in tests %}
+
+                <div class="test-card">
+
+
+                    <div class="test-name">
+
+                        {{ test.test_name }}
+
+                    </div>
+
+
+                    <div class="range">
+
+                        Reference Range:
+
+                        <strong>
+                            {{ test.lower_limit }}
+                            -
+                            {{ test.upper_limit }}
+                        </strong>
+
+                        {{ test.unit }}
+
+                    </div>
+
+
+                    <div class="input-row">
+
+                        <input
+                            type="number"
+                            step="any"
+                            name="test_{{ test._id }}"
+                            placeholder="Enter value"
+                        >
+
+                        <span class="unit">
+                            {{ test.unit }}
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+
+            <!-- INFO -->
+
+            <div class="info">
+
+                <strong>ℹ️ How SmartLab works:</strong>
+
+                <br>
+
+                After you save the report, SmartLab compares each
+                entered value with its configured laboratory
+                reference range and marks it as
+                <strong>Within Range</strong>,
+                <strong>Below Range</strong>, or
+                <strong>Above Range</strong>.
+
+                <br><br>
+
+                This system organizes laboratory results and does
+                not diagnose medical conditions.
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="buttons">
+
+                <a
+                    href="/dashboard"
+                    class="cancel-btn">
+
+                    Cancel
+
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="save-btn">
+
+                    💾 Save Laboratory Report
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

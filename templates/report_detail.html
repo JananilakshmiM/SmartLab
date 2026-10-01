@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SmartLab - Report Details</title>
+
+
+    <style>
+
+        /* =========================================
+           RESET
+        ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* =========================================
+           BODY
+        ========================================= */
+
+        body {
+            background: #f1f5f9;
+            color: #334155;
+            min-height: 100vh;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        header {
+            background: #0f766e;
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            border: 1px solid white;
+            padding: 9px 16px;
+            border-radius: 7px;
+            transition: 0.2s;
+        }
+
+
+        .back-btn:hover {
+            background: white;
+            color: #0f766e;
+        }
+
+
+        /* =========================================
+           MAIN CONTAINER
+        ========================================= */
+
+        .container {
+            width: 88%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+
+        /* =========================================
+           HEADING
+        ========================================= */
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+
+        .heading h1 {
+            color: #0f766e;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+
+        .heading p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* =========================================
+           SUMMARY CARDS
+        ========================================= */
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+
+        .summary-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .summary-card p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+
+        .summary-card h2 {
+            color: #0f766e;
+            font-size: 26px;
+        }
+
+
+        /* =========================================
+           SUMMARY COLORS
+        ========================================= */
+
+        .summary-normal {
+            border-top: 5px solid #16a34a;
+        }
+
+
+        .summary-below {
+            border-top: 5px solid #f59e0b;
+        }
+
+
+        .summary-above {
+            border-top: 5px solid #dc2626;
+        }
+
+
+        .summary-total {
+            border-top: 5px solid #0f766e;
+        }
+
+
+        .summary-source {
+            border-top: 5px solid #2563eb;
+        }
+
+
+        /* =========================================
+           SOURCE BADGES
+        ========================================= */
+
+        .source-csv {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .source-manual {
+            display: inline-block;
+            background: #dcfce7;
+            color: #15803d;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        /* =========================================
+           REPORT PANEL
+        ========================================= */
+
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .panel h2 {
+            color: #334155;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+
+        th {
+            background: #f0fdfa;
+            color: #0f766e;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid #ccfbf1;
+        }
+
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+
+        /* =========================================
+           STATUS - NORMAL
+        ========================================= */
+
+        .normal {
+            display: inline-block;
+            background: #dcfce7;
+            color: #15803d;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           STATUS - BELOW
+        ========================================= */
+
+        .below {
+            display: inline-block;
+            background: #fef3c7;
+            color: #b45309;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           STATUS - ABOVE
+        ========================================= */
+
+        .above {
+            display: inline-block;
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           DISCLAIMER
+        ========================================= */
+
+        .note {
+            margin-top: 25px;
+            padding: 18px;
+            background: #fefce8;
+            color: #854d0e;
+            border-radius: 10px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           BUTTON GROUP
+        ========================================= */
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+
+        /* =========================================
+           DOWNLOAD PDF BUTTON
+        ========================================= */
+
+        .download-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #0f766e;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+
+        .download-btn:hover {
+            background: #115e59;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+           DASHBOARD BUTTON
+        ========================================= */
+
+        .dashboard-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #e2e8f0;
+            color: #334155;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+
+        .dashboard-btn:hover {
+            background: #cbd5e1;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 800px) {
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+
+            header {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+
+
+            .container {
+                width: 94%;
+            }
+
+
+            .panel {
+                padding: 20px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+
+            .heading h1 {
+                font-size: 26px;
+            }
+
+
+            .button-group {
+                flex-direction: column;
+            }
+
+
+            .download-btn,
+            .dashboard-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     HEADER
+========================================== -->
+
+<header>
+
+    <div class="logo">
+        🧪 SmartLab
+    </div>
+
+
+    <a
+        href="/dashboard"
+        class="back-btn"
+    >
+        ← Dashboard
+    </a>
+
+</header>
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main class="container">
+
+
+    <!-- ==========================================
+         PAGE HEADING
+    ========================================== -->
+
+    <div class="heading">
+
+        <h1>
+            Laboratory Report Details
+        </h1>
+
+        <p>
+            Review the laboratory values recorded
+            in this report.
+        </p>
+
+    </div>
+
+
+    <!-- ==========================================
+     SUMMARY
+========================================== -->
+
+<section class="summary">
+
+    <!-- REPORT DATE -->
+    <div class="summary-card">
+
+        <p>
+            📅 Report Date
+        </p>
+
+        <h2>
+            {{ report.report_date }}
+        </h2>
+
+    </div>
+
+
+    <!-- TOTAL TESTS -->
+    <div class="summary-card summary-total">
+
+        <p>
+            🧪 Total Tests
+        </p>
+
+        <h2>
+            {{ total_tests }}
+        </h2>
+
+    </div>
+
+
+    <!-- REPORT SOURCE -->
+    <div class="summary-card summary-source">
+
+        <p>
+            📁 Report Source
+        </p>
+
+        {% if source == "CSV Upload" %}
+
+            <span class="source-csv">
+                📁 CSV Upload
+            </span>
+
+        {% else %}
+
+            <span class="source-manual">
+                ✍️ Manual Entry
+            </span>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- WITHIN RANGE -->
+    <div class="summary-card summary-normal">
+
+        <p>
+            ✅ Within Range
+        </p>
+
+        <h2>
+            {{ within_count }}
+        </h2>
+
+    </div>
+
+
+    <!-- BELOW RANGE -->
+    <div class="summary-card summary-below">
+
+        <p>
+            ↓ Below Range
+        </p>
+
+        <h2>
+            {{ below_count }}
+        </h2>
+
+    </div>
+
+
+    <!-- ABOVE RANGE -->
+    <div class="summary-card summary-above">
+
+        <p>
+            ↑ Above Range
+        </p>
+
+        <h2>
+            {{ above_count }}
+        </h2>
+
+    </div>
+
+</section>
+
+
+    <!-- ==========================================
+         TEST RESULTS
+    ========================================== -->
+
+    <section class="panel">
+
+        <h2>
+            🧬 Test Results
+        </h2>
+
+
+        {% if report.results %}
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Test Name
+                            </th>
+
+                            <th>
+                                Recorded Value
+                            </th>
+
+                            <th>
+                                Reference Range
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for result in report.results %}
+
+                            <tr>
+
+
+                                <!-- TEST NAME -->
+
+                                <td>
+
+                                    <strong>
+                                        {{ result.test_name }}
+                                    </strong>
+
+                                </td>
+
+
+                                <!-- VALUE -->
+
+                                <td>
+
+                                    {{ result.value }}
+
+                                    {{ result.unit }}
+
+                                </td>
+
+
+                                <!-- REFERENCE RANGE -->
+
+                                <td>
+
+                                    {{ result.lower_limit }}
+
+                                    –
+
+                                    {{ result.upper_limit }}
+
+                                    {{ result.unit }}
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    {% if result.status == "Within Range" %}
+
+                                        <span class="normal">
+
+                                            ✓ Within Range
+
+                                        </span>
+
+                                    {% elif result.status == "Below Range" %}
+
+                                        <span class="below">
+
+                                            ↓ Below Range
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="above">
+
+                                            ↑ Above Range
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                            </tr>
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        {% else %}
+
+            <p>
+                No test values were entered
+                for this report.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ==========================================
+         DISCLAIMER
+    ========================================== -->
+
+    <div class="note">
+
+        <strong>
+            ⚠️ Important:
+        </strong>
+
+        Reference ranges can vary between laboratories
+        and individual circumstances.
+
+        The status shown by SmartLab is for
+        informational purposes only and does not
+        diagnose a medical condition.
+
+        Please discuss abnormal laboratory results
+        with a qualified healthcare professional.
+
+    </div>
+
+
+    <!-- ==========================================
+         BUTTONS
+    ========================================== -->
+
+    <div class="button-group">
+
+
+        <!-- DOWNLOAD PDF -->
+
+        <a
+            href="{{ url_for(
+                'download_report',
+                report_id=report._id
+            ) }}"
+            class="download-btn"
+        >
+
+            📄 Download PDF
+
+        </a>
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="/dashboard"
+            class="dashboard-btn"
+        >
+
+            ← Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>
